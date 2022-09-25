@@ -33,7 +33,7 @@ const SignUpForm = () => {
       resetFormFields();
     }
     catch (error) {
-      if (error.code == 'auth/email-already-in-use') {
+      if (error.code === 'auth/email-already-in-use') {
         alert('이미 존재하는 이메일입니다.');
       }
       else {
