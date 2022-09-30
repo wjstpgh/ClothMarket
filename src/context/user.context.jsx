@@ -1,53 +1,55 @@
-import { createContext, useEffect, useReducer } from "react";
-import { onAuthStateChangedListener, createUserDocumentFromAuth } from "../utils/firebase/firebase.utils";
-import { createAction } from "../utils/reducer/reducer.utils";
+//현재 사용되지 않는 사용자 상태관리 코드, 리덕스로 대체
 
-export const UserContext = createContext({
-  currentUser: null,
-  setCurrentUser: () => null,
-});
+// import { createContext, useEffect, useReducer } from "react";
+// import { onAuthStateChangedListener, createUserDocumentFromAuth } from "../utils/firebase/firebase.utils";
+// import { createAction } from "../utils/reducer/reducer.utils";
 
-export const USER_ACTION_TYPES = {
-  SET_CURRENT_USER: 'SET_CURRENT_USER'
-}
+// export const UserContext = createContext({
+//   currentUser: null,
+//   setCurrentUser: () => null,
+// });
 
-const userReducer = (state, action) => {
-  const { type, payload } = action;
+// export const USER_ACTION_TYPES = {
+//   SET_CURRENT_USER: 'SET_CURRENT_USER'
+// }
 
-  switch (type) {
-    case USER_ACTION_TYPES.SET_CURRENT_USER:
-      return {
-        ...state,
-        currentUser: payload
-      }
-    default:
-      throw new Error(`정의되지 않은 타입 : ${type}, usercontext에 전달`)
-  }
-}
+// const userReducer = (state, action) => {
+//   const { type, payload } = action;
 
-const INITIAL_STATE = {
-  currentUser: null
-}
+//   switch (type) {
+//     case USER_ACTION_TYPES.SET_CURRENT_USER:
+//       return {
+//         ...state,
+//         currentUser: payload
+//       }
+//     default:
+//       throw new Error(`정의되지 않은 타입 : ${type}, usercontext에 전달`)
+//   }
+// }
 
-export const UserProvider = ({ children }) => {
-  const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
+// const INITIAL_STATE = {
+//   currentUser: null
+// }
 
-  const setCurrentUser = (user) => {
-    dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
-  }
+// export const UserProvider = ({ children }) => {
+//   const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
-  const value = { currentUser, setCurrentUser };
+//   const setCurrentUser = (user) => {
+//     dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
+//   }
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChangedListener((user) => {
-      if (user) {
-        createUserDocumentFromAuth(user);
-      }
-      setCurrentUser(user);
-    });
+//   const value = { currentUser, setCurrentUser };
 
-    return unsubscribe;
-  }, []);
+//   useEffect(() => {
+//     const unsubscribe = onAuthStateChangedListener((user) => {
+//       if (user) {
+//         createUserDocumentFromAuth(user);
+//       }
+//       setCurrentUser(user);
+//     });
 
-  return <UserContext.Provider value={value}>{children}</UserContext.Provider>
-};
+//     return unsubscribe;
+//   }, []);
+
+//   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
+// };
