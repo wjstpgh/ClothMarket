@@ -1,21 +1,23 @@
-import { createContext, useEffect, useState } from "react";
-import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils";
+//현재 사용하지 않는 상품데이터 상태 관리 코드, 리덕스로 대체
 
-export const CategoriesContext = createContext({
-  categoriesMap: {},
-});
+// import { createContext, useEffect, useState } from "react";
+// import { getCategoriesAndDocuments } from "../utils/firebase/firebase.utils";
 
-export const CategoriesProvider = ({ children }) => {
-  const [categoriesMap, setCategoriesMap] = useState({});
-  const value = { categoriesMap };
+// export const CategoriesContext = createContext({
+//   categoriesMap: {},
+// });
 
-  useEffect(() => {
-    const getCategoriesMap = async () => {
-      const categoryMap = await getCategoriesAndDocuments();
-      setCategoriesMap(categoryMap);
-    }
-    getCategoriesMap();
-  }, []);
+// export const CategoriesProvider = ({ children }) => {
+//   const [categoriesMap, setCategoriesMap] = useState({});
+//   const value = { categoriesMap };
 
-  return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>
-}
+//   useEffect(() => {
+//     const getCategoriesMap = async () => {
+//       const categoryMap = await getCategoriesAndDocuments();
+//       setCategoriesMap(categoryMap);
+//     }
+//     getCategoriesMap();
+//   }, []);
+
+//   return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>
+// }
