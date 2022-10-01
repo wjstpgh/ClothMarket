@@ -1,131 +1,135 @@
-import { createContext, useReducer } from "react";
-import { createAction } from "../utils/reducer/reducer.utils";
+// 더이상 사용하지 않는 장바구니상품관련 context, Redux로 대체
 
-const addCartItem = (cartItems, productToAdd) => {
-  const existingCartItem = cartItems.find(
-    (cartItem) => cartItem.id === productToAdd.id
-  );
+// import { createContext, useReducer } from "react";
+// import { createAction } from "../utils/reducer/reducer.utils";
 
-  if (existingCartItem) {
-    return cartItems.map((cartItem) =>
-      cartItem.id === productToAdd.id
-        ? { ...cartItem, quantity: cartItem.quantity + 1 }
-        : cartItem
-    );
-  }
+// const addCartItem = (cartItems, productToAdd) => {
+//   const existingCartItem = cartItems.find(
+//     (cartItem) => cartItem.id === productToAdd.id
+//   );
 
-  return [...cartItems, { ...productToAdd, quantity: 1 }];
-}
+//   if (existingCartItem) {
+//     return cartItems.map((cartItem) =>
+//       cartItem.id === productToAdd.id
+//         ? { ...cartItem, quantity: cartItem.quantity + 1 }
+//         : cartItem
+//     );
+//   }
 
-const removeCartItem = (cartItems, cartItemToRemove) => {
-  const existingCartItem = cartItems.find(
-    (cartItem) => cartItem.id === cartItemToRemove.id
-  );
+//   return [...cartItems, { ...productToAdd, quantity: 1 }];
+// }
 
-  if (existingCartItem.quantity === 1) {
-    return (
-      cartItems.filter(
-        cartItem =>
-          cartItem.id !== cartItemToRemove.id)
-    );
-  }
+// const removeCartItem = (cartItems, cartItemToRemove) => {
+//   const existingCartItem = cartItems.find(
+//     (cartItem) => cartItem.id === cartItemToRemove.id
+//   );
 
-  return cartItems.map((cartItem) =>
-    cartItem.id === cartItemToRemove.id
-      ? { ...cartItem, quantity: cartItem.quantity - 1 }
-      : cartItem
-  );
-}
+//   if (existingCartItem.quantity === 1) {
+//     return (
+//       cartItems.filter(
+//         cartItem =>
+//           cartItem.id !== cartItemToRemove.id)
+//     );
+//   }
 
-const clearCartItem = (cartItems, cartItemToRemove) => {
-  return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id)
-}
+//   return cartItems.map((cartItem) =>
+//     cartItem.id === cartItemToRemove.id
+//       ? { ...cartItem, quantity: cartItem.quantity - 1 }
+//       : cartItem
+//   );
+// }
 
-export const CartContext = createContext({
-  isCartOpen: true,
-  setIsCartOpen: () => { },
-  cartItems: [],
-  addItemToCart: () => { },
-  removeItemToCart: () => { },
-  clearItemFromCart: () => { },
-  cartCount: 0,
-  cartTotal: 0,
-});
+// const clearCartItem = (cartItems, cartItemToRemove) => {
+//   return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id)
+// }
 
-const CART_ACTION_TYPES = {
-  SET_CART_ITEMS: 'SET_CART_ITEMS',
-  SET_IS_CART_OPEN: 'SET_IS_CART_OPEN',
-}
+// export const CartContext = createContext({
+//   isCartOpen: true,
+//   setIsCartOpen: () => { },
+//   cartItems: [],
+//   addItemToCart: () => { },
+//   removeItemToCart: () => { },
+//   clearItemFromCart: () => { },
+//   cartCount: 0,
+//   cartTotal: 0,
+// });
 
-const INITIAL_STATE = {
-  isCartOpen: false,
-  cartItems: [],
-  cartCount: 0,
-  cartTotal: 0,
-};
+// const CART_ACTION_TYPES = {
+//   SET_CART_ITEMS: 'SET_CART_ITEMS',
+//   SET_CART_COUNT: 'SET_CART_COUNT',
+//   SET_CART_TOTAL: 'SET_CART_TOTAL',
+//   SET_IS_CART_OPEN: 'SET_IS_CART_OPEN',
+// }
 
-const cartReducer = (state, action) => {
-  const { type, payload } = action;
+// const INITIAL_STATE = {
+//   isCartOpen: false,
+//   cartItems: [],
+//   cartCount: 0,
+//   cartTotal: 0,
+// };
 
-  switch (type) {
-    case CART_ACTION_TYPES.SET_CART_ITEMS:
-      return {
-        ...state,
-        ...payload,
-      };
-    case CART_ACTION_TYPES.SET_IS_CART_OPEN:
-      return {
-        ...state,
-        isCartOpen: payload,
-      };
-    default:
-      throw new Error(`알수없는 타입 ${type} : cartReducer`)
-  }
-}
+// const cartReducer = (state, action) => {
+//   const { type, payload } = action;
 
-export const CartProvider = ({ children }) => {
+//   switch (type) {
+//     case CART_ACTION_TYPES.SET_CART_ITEMS:
+//       return {
+//         ...state,
+//         ...payload,
+//       };
+//     case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+//       return {
+//         ...state,
+//         isCartOpen: payload,
+//       };
+//     default:
+//       throw new Error(`알수없는 타입 ${type} : cartReducer`)
+//   }
+// }
 
-  const [{ cartItems, cartCount, cartTotal, isCartOpen }, dispatch] =
-    useReducer(cartReducer, INITIAL_STATE);
+// export const CartProvider = ({ children }) => {
 
-  const updateCartItemsReducer = (newCartItems) => {
-    const newCartCount = newCartItems.reduce(
-      (total, cartItem) => total + cartItem.quantity, 0
-    );
+//   const [{ cartItems, cartCount, cartTotal, isCartOpen }, dispatch] =
+//     useReducer(cartReducer, INITIAL_STATE);
 
-    const newCartTotal = newCartItems.reduce(
-      (total, cartItem) => total + cartItem.quantity * cartItem.price, 0
-    );
+//   const updateCartItemsReducer = (newCartItems) => {
+//     const newCartCount = newCartItems.reduce(
+//       (total, cartItem) => total + cartItem.quantity, 0
+//     );
 
-    dispatch(
-      createAction(
-        CART_ACTION_TYPES.SET_CART_ITEMS, {
-        cartItems: newCartItems,
-        cartTotal: newCartTotal,
-        cartCount: newCartCount
-      }));
-  }
+//     const newCartTotal = newCartItems.reduce(
+//       (total, cartItem) => total + cartItem.quantity * cartItem.price, 0
+//     );
 
-  const addItemToCart = (productToAdd) => {
-    const newCartItems = addCartItem(cartItems, productToAdd);
-    updateCartItemsReducer(newCartItems);
-  }
+//     dispatch(
+//       createAction(
+//         CART_ACTION_TYPES.SET_CART_ITEMS, {
+//         cartItems: newCartItems,
+//         cartTotal: newCartTotal,
+//         cartCount: newCartCount
+//       }));
+//   }
 
-  const removeItemToCart = (cartItemToRemove) => {
-    const newCartItems = removeCartItem(cartItems, cartItemToRemove);
-    updateCartItemsReducer(newCartItems);
-  }
+//   const addItemToCart = (productToAdd) => {
+//     const newCartItems = addCartItem(cartItems, productToAdd);
+//     updateCartItemsReducer(newCartItems);
+//   }
 
-  const clearItemFromCart = (cartItemToClear) => {
-    const newCartItems = clearCartItem(cartItems, cartItemToClear);
-    updateCartItemsReducer(newCartItems);
-  }
+//   const removeItemToCart = (cartItemToRemove) => {
+//     const newCartItems = removeCartItem(cartItems, cartItemToRemove);
+//     updateCartItemsReducer(newCartItems);
+//   }
 
-  const setIsCartOpen = (bool) => {
-    dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool))
-  }
+//   const clearItemFromCart = (cartItemToClear) => {
+//     const newCartItems = clearCartItem(cartItems, cartItemToClear);
+//     updateCartItemsReducer(newCartItems);
+//   }
 
-  const value = { isCartOpen, cartTotal, setIsCartOpen, cartItems, clearItemFromCart, removeItemToCart, addItemToCart, cartCount };
+//   const setIsCartOpen = (bool) => {
+//     dispatch(createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, bool))
+//   }
 
-  return <CartContext.Provider value={value}>{children}</CartContext.Provider>
-}
+//   const value = { isCartOpen, cartTotal, setIsCartOpen, cartItems, clearItemFromCart, removeItemToCart, addItemToCart, cartCount };
+
+//   return <CartContext.Provider value={value}>{children}</CartContext.Provider>
+// }
