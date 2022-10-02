@@ -1,6 +1,6 @@
 import Directory from "../../component/directory/directory.component";
 
-const Home=()=>{
+const Home = () => {
   return (
     <Directory />
   );
