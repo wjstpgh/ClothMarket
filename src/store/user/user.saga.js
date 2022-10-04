@@ -64,6 +64,6 @@ export function* userSagas() {
   yield all([
     call(onCheckUserSession),
     call(onGoogleSignInStart),
-    // call(onEmailSignInStart)
+    call(onEmailSignInStart)
   ]);
 }
