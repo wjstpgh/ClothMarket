@@ -30,5 +30,18 @@ export const CartItems = styled.div`
   height: 240px;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow: auto;
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 10px;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: rgba(99,99,99,0.14);
+    border-radius: 10px;
+  }
 `;
