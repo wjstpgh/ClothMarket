@@ -25,7 +25,7 @@ const CartDropdown = () => {
             )
         }
       </CartItems>
-      <Button onClick={goToCheckoutHandler}>결제하기</Button>
+      <Button onClick={goToCheckoutHandler}>결제페이지 이동</Button>
     </CartDropdownContainer>
   );
 }
