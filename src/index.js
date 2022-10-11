@@ -1,25 +1,27 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.scss';
+import { render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store, persistor } from './store/store';
-import { PersistGate } from 'redux-persist/integration/react';
-import { Elements } from '@stripe/react-stripe-js';
-import { stripePromise } from './utils/stripe/stripe.utils';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+import App from './App';
+import { UserProvider } from './contexts/user.context';
+import { CategoriesProvider } from './contexts/categories.context';
+import { CartProvider } from './contexts/cart.context';
+
+import './index.scss';
+
+const rootElement = document.getElementById('root');
+
+render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter>
-          <Elements stripe={stripePromise}>
+    <BrowserRouter>
+      <UserProvider>
+        <CategoriesProvider>
+          <CartProvider>
             <App />
-          </Elements>
-        </BrowserRouter>
-      </PersistGate>
-    </Provider>
-  </React.StrictMode>
+          </CartProvider>
+        </CategoriesProvider>
+      </UserProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
+  rootElement
 );
