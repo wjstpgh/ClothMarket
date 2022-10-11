@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
+import { AuthError, AuthErrorCodes } from "firebase/auth";
 import { useDispatch } from "react-redux";
 import { signUpStart } from "../../store/user/user.action";
-import { createAuthUserWithEmailAndPassword, createUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 import Button from "../button/botton.component";
 import FormInput from "../form-input/form-input.component";
-import './sign-up-form.styles.scss';
+import { SignUpContainer } from './sign-up-form.styles';
 
 const defaultFormFields = {
   displayName: '',
@@ -22,7 +22,7 @@ const SignUpForm = () => {
     setFormFields(defaultFormFields);
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (password !== confirmPassword) {
@@ -35,7 +35,7 @@ const SignUpForm = () => {
       resetFormFields();
     }
     catch (error) {
-      if (error.code === 'auth/email-already-in-use') {
+      if ((error as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
         alert('이미 존재하는 이메일입니다.');
       }
       else {
@@ -44,14 +44,14 @@ const SignUpForm = () => {
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
 
   return (
     <>
-      <div className="sign-up-container">
+      <SignUpContainer>
         <h2>아직 회원이 아니라면</h2>
         <span>간단한 회원가입 후 쇼핑혜택 받기</span>
         <form onSubmit={handleSubmit}>
@@ -89,7 +89,7 @@ const SignUpForm = () => {
           />
           <Button type="submit" >회원가입</Button>
         </form>
-      </div>
+      </SignUpContainer>
     </>
   )
 }

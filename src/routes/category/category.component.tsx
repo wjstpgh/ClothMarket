@@ -4,10 +4,14 @@ import { useParams } from "react-router-dom";
 import ProductCard from "../../component/product-card/product-card.component";
 import Spinner from "../../component/spinner/spinner.component";
 import { selectCategoriesIsLoading, selectCategoriesMap } from "../../store/categories/category.select";
-import './category.styles.scss';
+import { CategoryContainer, Title } from './category.styles';
+
+type CategoryRouteParams = {
+  category: string;
+}
 
 const Category = () => {
-  const { category } = useParams();
+  const { category } = useParams<keyof CategoryRouteParams>() as CategoryRouteParams;
   const categoriesMap = useSelector(selectCategoriesMap);
   const isLoading = useSelector(selectCategoriesIsLoading);
   const [products, setProducts] = useState(categoriesMap[category]);
@@ -18,17 +22,17 @@ const Category = () => {
 
   return (
     <>
-      <h2 className="category-title">{category.toUpperCase()}</h2>
+      <Title>{category.toUpperCase()}</Title>
       {isLoading ? (
         <Spinner />
       ) : (
-        <div className="category-container">
+        <CategoryContainer>
           {products &&
             products.map((product) =>
               <ProductCard key={product.id} product={product} />
             )
           }
-        </div>
+        </CategoryContainer>
       )}
     </>
   )

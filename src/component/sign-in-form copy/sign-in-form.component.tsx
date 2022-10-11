@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
-import { googleSignInStart,emailSignInStart } from "../../store/user/user.action";
+import { googleSignInStart, emailSignInStart } from "../../store/user/user.action";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/botton.component";
 import FormInput from "../form-input/form-input.component";
-import './sign-in-form.styles.scss';
+import { ButtonsContainer, SignInContainer } from './sign-in-form.styles';
 
 const defaultFormFields = {
   email: '',
@@ -11,7 +11,7 @@ const defaultFormFields = {
 }
 
 const SignInForm = () => {
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
@@ -23,35 +23,36 @@ const SignInForm = () => {
     dispatch(googleSignInStart());
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      dispatch(emailSignInStart(email,password));
+      dispatch(emailSignInStart(email, password));
       resetFormFields();
     }
     catch (error) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          alert('비밀번호가 틀렸습니다.');
-          break;
-        case 'auth/user-not-found':
-          alert('사용자 정보가 없습니다.');
-          break;
-        default:
-          console.log('login error', error);
-      }
+      console.log('login error', error);
+      // switch (error.code) {
+      //   case 'auth/wrong-password':
+      //     alert('비밀번호가 틀렸습니다.');
+      //     break;
+      //   case 'auth/user-not-found':
+      //     alert('사용자 정보가 없습니다.');
+      //     break;
+      //   default:
+      //     console.log('login error', error);
+      // }
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormFields({ ...formFields, [name]: value });
   };
 
   return (
     <>
-      <div className="sign-up-container">
+      <SignInContainer>
         <h2>이미 회원이라면</h2>
         <span>로그인 후 쇼핑하러 가기</span>
         <form onSubmit={handleSubmit}>
@@ -71,17 +72,17 @@ const SignInForm = () => {
             name='password'
             value={password}
           />
-          <div className="buttons-container">
+          <ButtonsContainer>
             <Button type="submit" >로그인</Button>
             <Button
-              type="botton"
+              type="button"
               buttonType={BUTTON_TYPE_CLASSES.google}
               onClick={signInWithGoogle}>
               구글 로그인
             </Button>
-          </div>
+          </ButtonsContainer>
         </form>
-      </div>
+      </SignInContainer>
     </>
   )
 }
