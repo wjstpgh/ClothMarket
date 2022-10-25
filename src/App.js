@@ -4,6 +4,7 @@ import { useEffect, lazy, Suspense } from "react";
 import { checkUserSession } from "./store/user/user.action";
 import { useDispatch } from "react-redux";
 import Spinner from "./component/spinner/spinner.component";
+import { getCategoriesAndDocuments } from "./utils/firebase/firebase.utils";
 
 const Home = lazy(() => import('./routes/home/home.component'));
 const Authentication = lazy(() => import('./routes/authentication/authentication.component'));
@@ -16,6 +17,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(checkUserSession());
+    console.log(getCategoriesAndDocuments());
   }, []);
 
   return (
